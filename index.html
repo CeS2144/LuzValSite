@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luz Valeria — Fotografía</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Outfit:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #f7f4ef;
+      --dark: #1a1a18;
+      --mid: #6b6b67;
+      --accent: #c9a87c;
+      --border: rgba(26,26,24,0.12);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      background: var(--cream);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 3rem;
+      mix-blend-mode: multiply;
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      color: var(--dark);
+      text-decoration: none;
+    }
+
+    .nav-brand {
+      position: relative;
+      height: 24px;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-logo {
+      position: absolute;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .nav-logo-img {
+      position: absolute;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    nav.scrolled .nav-logo {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+
+    nav.scrolled .nav-logo-img {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--dark);
+      text-decoration: none;
+      opacity: 0.7;
+      transition: opacity 0.3s;
+    }
+
+    .nav-links a:hover { opacity: 1; }
+
+    /* ── HERO ── */
+    #inicio {
+      height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 5rem 3rem 5rem 3rem;
+    }
+
+    .hero-tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 6vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--dark);
+      margin-bottom: 2rem;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--mid);
+    }
+
+    .hero-sub {
+      font-size: 0.85rem;
+      line-height: 1.8;
+      color: var(--mid);
+      max-width: 30ch;
+      margin-bottom: 3rem;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-left: 3rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--dark);
+      text-decoration: none;
+      border-bottom: 1px solid var(--dark);
+      padding-bottom: 0.25rem;
+      width: fit-content;
+      transition: gap 0.3s;
+    }
+
+    .hero-cta:hover { gap: 1.25rem; }
+
+    .hero-right {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-img-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(160deg, #d4c5b0 0%, #b8a898 40%, #9a8878 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-img-placeholder span {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* IMAGE FILL — replace placeholder with real image */
+    .hero-right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 3rem;
+      left: 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 4rem;
+      background: var(--mid);
+      animation: scrollDown 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollDown {
+      0%   { transform: scaleY(0); transform-origin: top; }
+      50%  { transform: scaleY(1); transform-origin: top; }
+      50.1%{ transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    /* ── PORTAFOLIO ── */
+    #portafolio {
+      padding: 8rem 3rem;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .section-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      color: var(--dark);
+    }
+
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+      margin-left: 1rem;
+    }
+
+    /* MASONRY GRID */
+    .gallery-grid {
+      columns: 3;
+      column-gap: 1.25rem;
+    }
+
+    .gallery-item {
+      break-inside: avoid;
+      margin-bottom: 1.25rem;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .gallery-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(26,26,24,0);
+      transition: background 0.4s;
+    }
+
+    .gallery-item:hover::after {
+      background: rgba(26,26,24,0.25);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.03);
+    }
+
+    /* PLACEHOLDER PHOTOS */
+    .photo-placeholder {
+      width: 100%;
+      display: block;
+    }
+
+    .tall   { aspect-ratio: 3/4; }
+    .square { aspect-ratio: 1/1; }
+    .wide   { aspect-ratio: 4/3; }
+
+    .ph-1 { background: #c4b8a8; }
+    .ph-2 { background: #b8c4bb; }
+    .ph-3 { background: #c4b8b8; }
+    .ph-4 { background: #b8bec4; }
+    .ph-5 { background: #c4bfb8; }
+    .ph-6 { background: #bdb8c4; }
+    .ph-7 { background: #c4b8be; }
+    .ph-8 { background: #b8c4c0; }
+    .ph-9 { background: #c2c4b8; }
+
+    .gallery-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 1.25rem;
+      color: white;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0;
+      transform: translateY(0.5rem);
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 2;
+    }
+
+    .gallery-item:hover .gallery-caption {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(26,26,24,0.95);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox.active { display: flex; }
+
+    .lightbox-img {
+      max-width: 80vw;
+      max-height: 85vh;
+      object-fit: contain;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 2rem; right: 2rem;
+      color: white;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+      background: none;
+      border: none;
+    }
+
+    .lightbox-close:hover { opacity: 1; }
+
+    /* ── CONTACTO ── */
+    #contacto {
+      padding: 8rem 3rem;
+      background: var(--dark);
+      color: var(--cream);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+
+    .contact-left .section-num { color: var(--accent); }
+
+    .contact-left .section-title { color: var(--cream); }
+
+    .contact-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3.5vw, 2.75rem);
+      font-weight: 300;
+      font-style: italic;
+      color: rgba(247,244,239,0.5);
+      margin-top: 2rem;
+      line-height: 1.3;
+    }
+
+    .contact-info {
+      margin-top: 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .contact-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .contact-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .contact-value {
+      font-size: 0.95rem;
+      color: rgba(247,244,239,0.8);
+    }
+
+    .contact-value a {
+      color: rgba(247,244,239,0.8);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .contact-value a:hover { color: var(--accent); }
+
+    /* FORM */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-group label {
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(247,244,239,0.4);
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(247,244,239,0.15);
+      padding: 0.75rem 0;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 300;
+      color: var(--cream);
+      outline: none;
+      transition: border-color 0.3s;
+      width: 100%;
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: rgba(247,244,239,0.25);
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-bottom-color: var(--accent);
+    }
+
+    .form-group select option {
+      background: var(--dark);
+    }
+
+    .form-group textarea {
+      resize: none;
+      height: 100px;
+    }
+
+    .form-submit {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      background: transparent;
+      border: 1px solid rgba(247,244,239,0.25);
+      padding: 1rem 2rem;
+      color: var(--cream);
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color 0.3s, gap 0.3s;
+      width: fit-content;
+    }
+
+    .form-submit:hover {
+      border-color: var(--accent);
+      gap: 1.5rem;
+    }
+
+    .form-success {
+      display: none;
+      padding: 1rem;
+      border: 1px solid rgba(201,168,124,0.4);
+      color: var(--accent);
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      border-top: 1px solid rgba(247,244,239,0.08);
+      padding: 2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-weight: 300;
+      color: rgba(247,244,239,0.4);
+      letter-spacing: 0.1em;
+    }
+
+    .footer-copy {
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: rgba(247,244,239,0.25);
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-social a {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(247,244,239,0.4);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-social a:hover { color: var(--accent); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1.25rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+
+      #inicio { grid-template-columns: 1fr; }
+      .hero-left { padding: 7rem 1.5rem 3rem; }
+      .hero-right { height: 50vh; }
+      .hero-scroll { display: none; }
+
+      #portafolio { padding: 5rem 1.5rem; }
+      .gallery-grid { columns: 2; }
+
+      #contacto {
+        grid-template-columns: 1fr;
+        padding: 5rem 1.5rem;
+        gap: 3rem;
+      }
+
+      .form-row { grid-template-columns: 1fr; }
+
+      footer {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+        padding: 2rem 1.5rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .gallery-grid { columns: 1; }
+      .nav-links { display: none; }
+    }
+
+    /* ── FADE IN ANIMATION ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(2rem);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <a href="#inicio" class="nav-logo">Luz Valeria</a>
+    <a href="#inicio" class="nav-logo-img">
+      <!-- Reemplaza el SVG con tu logo si tienes uno -->
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="14" cy="14" r="13" stroke="#1a1a18" stroke-width="1"/>
+        <text x="14" y="18" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="11" fill="#1a1a18">LV</text>
+      </svg>
+    </a>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#portafolio">Portafolio</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+</nav>
+
+  <!-- HERO -->
+  <section id="inicio">
+    <div class="hero-left">
+      <p class="hero-tag">Fotografía de Bodas &amp; Eventos — Saltillo</p>
+      <h1 class="hero-title">
+        Lorem Ipsum<br>
+        <em>Lorem Ipsum</em><br>
+        Lorem Ipsum
+      </h1>
+      <p class="hero-sub">
+        Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum
+        Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum
+      </p>
+      <a href="#portafolio" class="hero-cta">
+        Ver portafolio
+        <span>→</span>
+      </a>
+    </div>
+    <div class="hero-right">
+      <!--
+        PARA AGREGAR TU FOTO HERO:
+        Reemplaza el div .hero-img-placeholder con:
+        <img src="tu-foto.jpg" alt="Fotografía de boda" />
+      -->
+      <div class="hero-img-placeholder">
+        <span>Tu foto aquí</span>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- PORTAFOLIO -->
+  <section id="portafolio">
+    <div class="section-header fade-in">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Portafolio</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="gallery-grid">
+      <!--
+        CÓMO AGREGAR TUS FOTOS:
+        Reemplaza cada <div class="photo-placeholder ..."> con:
+        <img src="foto.jpg" alt="descripción" />
+        
+        Puedes usar clases tall / square / wide para controlar la proporción
+        solo si usas placeholders. Con imágenes reales, el aspect-ratio
+        se determina automáticamente.
+      -->
+
+      <div class="gallery-item fade-in">
+        <img src="Imagenes/542376ldsdl.jpg" alt="descripción" />
+        <span class="gallery-caption">ola</span>
+      </div>
+
+      <div class="gallery-item fade-in">
+        <div class="photo-placeholder square ph-2"></div>
+        <span class="gallery-caption">Detalles del día</span>
+      </div>
+
+      <div class="gallery-item fade-in">
+        <div class="photo-placeholder wide ph-3"></div>
+        <span class="gallery-caption">Recepción</span>
+      </div>
+
+      <div class="gallery-item fade-in">
+        <div class="photo-placeholder square ph-4"></div>
+        <span class="gallery-caption">Retrato de pareja</span>
+      </div>
+
+      <div class="gallery-item fade-in">
+        <div class="photo-placeholder tall ph-5"></div>
+        <span class="gallery-caption">Boda en hacienda</span>
+      </div>
+
+      <div class="gallery-item fade-in">
+        <div class="photo-placeholder wide ph-6"></div>
+        <span class="gallery-caption">Celebración</span>
+      </div>
+
+      <div class="gallery-item fade-in">
+        <div class="photo-placeholder tall ph-7"></div>
+        <span class="gallery-caption">Primer baile</span>
+      </div>
+
+      <div class="gallery-item fade-in">
+        <div class="photo-placeholder square ph-8"></div>
+        <span class="gallery-caption">Momentos íntimos</span>
+      </div>
+
+      <div class="gallery-item fade-in">
+        <div class="photo-placeholder wide ph-9"></div>
+        <span class="gallery-caption">Vista panorámica</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+    <button class="lightbox-close" id="lightbox-close">Cerrar ✕</button>
+    <img class="lightbox-img" id="lightbox-img" src="" alt="" />
+  </div>
+
+  <!-- CONTACTO -->
+  <section id="contacto">
+    <div class="contact-left fade-in">
+      <div class="section-header" style="margin-bottom:0;">
+        <span class="section-num">02</span>
+        <h2 class="section-title" style="color:var(--cream);">Contacto</h2>
+      </div>
+      <p class="contact-tagline">
+        Mandame un<br>mensaje
+      </p>
+      <div class="contact-info">
+        <div class="contact-item">
+          <span class="contact-label">Email</span>
+          <span class="contact-value">
+            <a href="mailto:ana@anagarcia.mx">EMAIL</a>
+          </span>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">WhatsApp</span>
+          <span class="contact-value">
+            <a href="https://wa.me/528441234567" target="_blank">+52 844 123 4567</a>
+          </span>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">Instagram</span>
+          <span class="contact-value">
+            <a href="https://instagram.com/anagarciafoto" target="_blank">@INSTA</a>
+          </span>
+        </div>
+        <div class="contact-item">
+          <span class="contact-label">Zona de trabajo</span>
+          <span class="contact-value">Saltillo</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="fade-in">
+      <form class="contact-form" id="contact-form" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" required />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="tu@email.com" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="tipo">Tipo de evento</label>
+          <select id="tipo" name="tipo">
+            <option value="">Selecciona una opción</option>
+            <option value="boda">Boda</option>
+            <option value="civil">Boda civil</option>
+            <option value="compromiso">Sesión de compromiso</option>
+            <option value="xv">XV años</option>
+            <option value="corporativo">Evento corporativo</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="fecha">Fecha del evento</label>
+          <input type="date" id="fecha" name="fecha" />
+        </div>
+
+        <div class="form-group">
+          <label for="mensaje">Cuéntame sobre tu evento</label>
+          <textarea id="mensaje" name="mensaje" placeholder="Lugar, número de invitados, lo que imaginas..."></textarea>
+        </div>
+
+        <button type="submit" class="form-submit">
+          Enviar mensaje
+          <span>→</span>
+        </button>
+
+        <div class="form-success" id="form-success">
+          Mensaje recibido. Te escribo en menos de 24 horas.
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-logo">Luz Valeria</span>
+    <span class="footer-copy">© 2025 Luz Valeria Fotografía</span>
+    <div class="footer-social">
+      <a href="https://instagram.com/anagarciafoto" target="_blank">Instagram</a>
+      <a href="https://wa.me/528441234567" target="_blank">WhatsApp</a>
+    </div>
+  </footer>
+
+  <script>
+    /* ── FADE IN ON SCROLL ── */
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    /* ── LIGHTBOX ── */
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+
+    document.querySelectorAll('.gallery-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const img = item.querySelector('img');
+        if (img) {
+          lightboxImg.src = img.src;
+          lightboxImg.alt = img.alt;
+          lightbox.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        }
+      });
+    });
+
+    document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    /* ── CONTACT FORM ── */
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      /* 
+        PARA CONECTAR EL FORMULARIO CON FORMSPREE (GRATIS):
+        1. Ve a https://formspree.io y crea una cuenta gratuita
+        2. Crea un formulario y obtén tu endpoint
+        3. Cambia la línea de abajo:
+           action="https://formspree.io/f/TU_ID"
+        
+        Por ahora, solo muestra el mensaje de éxito visualmente.
+      */
+
+      const btn = this.querySelector('.form-submit');
+      btn.textContent = 'Enviando...';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        this.reset();
+        document.getElementById('form-success').style.display = 'block';
+        btn.textContent = 'Mensaje enviado ✓';
+      }, 1200);
+    });
+
+    /* ── NAV SCROLL ── */
+    const navEl = document.querySelector('nav');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navEl.classList.add('scrolled');
+      } else {
+        navEl.classList.remove('scrolled');
+      }
+    });
+
+  </script>
+
+</body>
+</html>
